@@ -51,16 +51,27 @@
 
   /* 1. Header ------------------------------------------------------------ */
   if (header) {
-    var ticking = false;
-    var updateHeader = function () {
-      header.classList.toggle('is-scrolled', window.scrollY > 8);
-      ticking = false;
-    };
-    window.addEventListener('scroll', function () {
-      if (!ticking) { ticking = true; window.requestAnimationFrame(updateHeader); }
-    }, { passive: true });
-    // First check in the next frame: reading scrollY during start-up would force an early full layout.
-    window.requestAnimationFrame(updateHeader);
+    // "Scrolled" = the page has moved more than 8px. An 8px sentinel at the very top of the page is observed
+    // instead of reading scrollY, so no script forces a layout during start-up or while scrolling.
+    if ('IntersectionObserver' in window) {
+      var sentinel = document.createElement('div');
+      sentinel.setAttribute('aria-hidden', 'true');
+      sentinel.style.cssText = 'position:absolute;top:0;left:0;width:1px;height:8px;pointer-events:none;visibility:hidden';
+      body.insertBefore(sentinel, body.firstChild);
+      new IntersectionObserver(function (entries) {
+        header.classList.toggle('is-scrolled', !entries[0].isIntersecting);
+      }).observe(sentinel);
+    } else {
+      var ticking = false;
+      var updateHeader = function () {
+        header.classList.toggle('is-scrolled', window.scrollY > 8);
+        ticking = false;
+      };
+      window.addEventListener('scroll', function () {
+        if (!ticking) { ticking = true; window.requestAnimationFrame(updateHeader); }
+      }, { passive: true });
+      updateHeader();
+    }
   }
 
   /* 2. Mobile navigation ---------------------------------------------- */
@@ -142,15 +153,15 @@
     });
 
     // One repetition of the message; moving by exactly this length loops without a jump.
+    // The ribbon text starts with that message, so its width is measured on the existing text (no probe
+    // element), and only once the browser has laid the page out (see laidOut below).
+    var laidOut = false;
     var measure = function () {
+      if (!laidOut) return;
       tracks.forEach(function (t) {
-        var probe = document.createElementNS('http://www.w3.org/2000/svg', 'text');
-        probe.setAttribute('class', t.text.getAttribute('class'));
-        probe.setAttribute('visibility', 'hidden');
-        probe.textContent = t.text.getAttribute('data-unit');
-        t.text.parentNode.appendChild(probe);
-        var w = probe.getComputedTextLength();
-        probe.parentNode.removeChild(probe);
+        var n = t.text.getAttribute('data-unit').length;
+        var w = 0;
+        try { w = t.text.getSubStringLength(0, n); } catch (err) { w = 0; }
         if (w > 0) t.unit = w;
       });
     };
@@ -187,15 +198,18 @@
       }
     };
 
-    measure();
     if (document.fonts && document.fonts.ready) document.fonts.ready.then(function () { measure(); run(); });
 
     if ('IntersectionObserver' in window) {
+      // The first callback arrives after layout, so measuring there is cheap.
       new IntersectionObserver(function (entries) {
+        if (!laidOut) { laidOut = true; measure(); }
         visible = entries[0].isIntersecting;
         run();
       }).observe(ribbon);
     } else {
+      laidOut = true;
+      measure();
       visible = true;
     }
     document.addEventListener('visibilitychange', run);

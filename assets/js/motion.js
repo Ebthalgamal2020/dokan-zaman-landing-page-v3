@@ -87,13 +87,13 @@
     var stageMode = window.matchMedia('(min-width: 1024px) and (min-height: 560px)');
     var inBand = []; // rows currently crossing the middle band of the viewport
 
-    var setActive = function (row) {
+    var setActive = function (row, skipMarker) {
       if (!row) return;
       active = row;
       var key = row.getAttribute('data-cat');
       rows.forEach(function (r) { r.classList.toggle('is-active', r === row); });
       images.forEach(function (img) { img.classList.toggle('is-active', img.getAttribute('data-cat-img') === key); });
-      placeMarker();
+      if (!skipMarker) placeMarker();
     };
 
     // Sticky stage: exactly one active row (it drives the photo).
@@ -107,7 +107,7 @@
       }
     };
 
-    setActive(rows[0]);
+    setActive(rows[0], true); // the marker is placed by the observer / fonts.ready, after the first layout
     if (hasIO) {
       var io = new IntersectionObserver(function (entries) {
         entries.forEach(function (entry) {
@@ -177,7 +177,7 @@
     window.addEventListener('resize', function () { ticker.add(update); }, { passive: true });
     onChange(reduce, function () { ticker.add(update); });
     if (document.fonts && document.fonts.ready) document.fonts.ready.then(function () { ticker.add(update); });
-    ticker.add(update);
+    if (!hasIO) ticker.add(update); // otherwise the observer's first callback schedules the first update
   })();
 
   /* 4. About: principles ↔ faces ----------------------------------------- */
