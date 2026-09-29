@@ -59,7 +59,8 @@
     window.addEventListener('scroll', function () {
       if (!ticking) { ticking = true; window.requestAnimationFrame(updateHeader); }
     }, { passive: true });
-    updateHeader();
+    // First check in the next frame: reading scrollY during start-up would force an early full layout.
+    window.requestAnimationFrame(updateHeader);
   }
 
   /* 2. Mobile navigation ---------------------------------------------- */

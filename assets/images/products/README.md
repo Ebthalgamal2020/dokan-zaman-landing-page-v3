@@ -5,7 +5,8 @@ They must not be presented as company photography. Replace them with approved ph
 
 Copied unchanged from V2 (`../dokan-zaman-landing-page-v2/assets/images/concept/`).
 Generator: FLUX.1 Krea [dev] (Hugging Face Space), warm sand studio backdrop, soft light from the upper right,
-no text, labels or logos. Each image has a full-size WebP and a `-640` WebP.
+no text, labels or logos. Each image has a full-size WebP plus `-640` and `-800` WebP versions (the same image,
+resized) so phones download a size close to what they display.
 
 | File | Used on the site | Known flaws |
 |---|---|---|

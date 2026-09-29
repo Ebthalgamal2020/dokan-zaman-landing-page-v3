@@ -8,8 +8,8 @@ A one-page Arabic (right-to-left) landing page for **دكان زمان للتو�
 ("شريككم الموثوق في التوريدات والتشغيل"). It presents the company's supply categories, purchasing-management
 service, target sectors, reasons to choose it, contract supply services and a quotation request form.
 
-> **Published with GitHub Pages** from the root of the `main` branch. The page still carries
-> `<meta name="robots" content="noindex, nofollow">` as a development build, so search engines are asked not to index it.
+> **Published with GitHub Pages** from the root of the `main` branch. The page is open to search-engine indexing and
+> declares its canonical URL (`<link rel="canonical">`) as the live address above.
 
 ## Technologies
 
