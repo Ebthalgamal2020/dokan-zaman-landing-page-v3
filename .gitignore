@@ -1,0 +1,22 @@
+node_modules/
+
+# OS / editor
+.DS_Store
+Thumbs.db
+desktop.ini
+.vscode/
+.idea/
+
+# Local-only
+*.log
+.env
+*.wpress
+*.zip
+
+# Secrets (never commit)
+.env.*
+*.pem
+*.key
+
+# Local review material: design boards, screenshots, test shots and internal project notes
+docs/
