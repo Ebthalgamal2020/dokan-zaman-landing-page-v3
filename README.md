@@ -1,13 +1,15 @@
 # Dokan Zaman V3 Landing Page
 
-**GitHub Repository:** [View Dokan Zaman V3 on GitHub](https://github.com/Ebthalgamal2020/dokan-zaman-landing-page-v3)
+**Live Website:** [Visit Dokan Zaman V3](https://ebthalgamal2020.github.io/dokan-zaman-landing-page-v3/)
+
+**GitHub Repository:** [View Source Code](https://github.com/Ebthalgamal2020/dokan-zaman-landing-page-v3)
 
 A one-page Arabic (right-to-left) landing page for **دكان زمان للتوريدات العمومية**, a general supplies company
 ("شريككم الموثوق في التوريدات والتشغيل"). It presents the company's supply categories, purchasing-management
 service, target sectors, reasons to choose it, contract supply services and a quotation request form.
 
-> **Source code only.** This repository contains the website's source. The site is **not deployed**, and the page
-> carries `<meta name="robots" content="noindex, nofollow">` as a development build.
+> **Published with GitHub Pages** from the root of the `main` branch. The page still carries
+> `<meta name="robots" content="noindex, nofollow">` as a development build, so search engines are asked not to index it.
 
 ## Technologies
 
